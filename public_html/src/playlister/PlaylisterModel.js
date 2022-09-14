@@ -1,6 +1,9 @@
 import jsTPS from "../common/jsTPS.js";
 import Playlist from "./Playlist.js";
+import AddSong_Transaction from "./transactions/AddSong_Transaction.js";
+import EditSong_Transaction from "./transactions/EditSong_Transaction.js";
 import MoveSong_Transaction from "./transactions/MoveSong_Transaction.js";
+import RemoveSong_Transaction from "./transactions/RemoveSong_Transaction.js";
 
 /**
  * PlaylisterModel.js
@@ -15,7 +18,7 @@ import MoveSong_Transaction from "./transactions/MoveSong_Transaction.js";
  * inside the view of the page.
  * 
  * @author McKilla Gorilla
- * @author ?
+ * @author Jake Papaspiridakos
  */
 export default class PlaylisterModel {
     /*
@@ -244,6 +247,79 @@ export default class PlaylisterModel {
         this.saveLists();
     }
 
+    addSong(title,artist,youTubeId){
+        if(this.hasCurrentList()){
+            title = "Untitled";
+            artist = "Unknown";
+            youTubeId = "dQw4w9WgXcQ";
+            this.currentList.addSong(title,artist,youTubeId);
+            
+            this.view.refreshPlaylist(this.currentList);
+
+        }
+        this.saveLists();
+    }
+
+    addSpecificSong(title,artist,youTubeId){
+        if(this.hasCurrentList()){
+            this.currentList.addSong(title,artist,youTubeId);
+            this.view.refreshPlaylist(this.currentList);
+        }
+        this.saveLists();
+    }
+    
+
+    addSongTransaction(title,artist,youTubeId){
+        let index = this.currentList.songs.length;
+        let transaction = new AddSong_Transaction(this,index,title,artist,youTubeId);
+        this.tps.addTransaction(transaction);
+        this.view.updateToolbarButtons(this);
+    }
+
+
+    addEditTransaction(index,title,artist,youTubeId,oldTitle,oldArtist,oldID){
+        let transaction = new EditSong_Transaction(this,index,title,artist,youTubeId,oldTitle,oldArtist,oldID);
+        this.tps.addTransaction(transaction);
+        this.view.updateToolbarButtons(this);
+       
+    }
+
+    // removeSong(index){
+    //     if(this.hasCurrentList()){
+    //         this.currentList.removeSong(index);
+    //     }
+    //     this.view.refreshPlaylist(this.currentList);
+    //     this.saveLists();
+    // }
+
+    editSong(index,title,artist,youTubeId){
+        if(this.hasCurrentList()){
+            this.currentList.songs[index].title = title;
+            this.currentList.songs[index].artist = artist;
+            this.currentList.songs[index].youTubeId = youTubeId;
+        }
+        this.view.refreshPlaylist(this.currentList);
+        this.saveLists();
+    }
+
+    removeSong(index){
+        if(this.hasCurrentList()){
+            this.currentList.songs.splice(index,1);
+        }
+        this.view.refreshPlaylist(this.currentList);
+        this.saveLists();
+    }
+
+
+    removeSongTransaction(index){
+        let title = this.currentList.songs[index].title;
+        let artist = this.currentList.songs[index].artist;
+        let youTubeId = this.currentList.songs[index].youTubeId;
+        let transaction = new RemoveSong_Transaction(this,index,title,artist,youTubeId);
+        this.tps.addTransaction(transaction);
+        this.view.updateToolbarButtons(this);
+    }
+
     // SIMPLE UNDO/REDO FUNCTIONS, NOTE THESE USE TRANSACTIONS
 
     undo() {
@@ -268,4 +344,6 @@ export default class PlaylisterModel {
         this.tps.addTransaction(transaction);
         this.view.updateToolbarButtons(this);
     }
+
+
 }

@@ -21,6 +21,11 @@ export default class PlaylisterView {
         this.enableButton('undo-button');
         this.enableButton('redo-button');
         this.enableButton('close-button');
+        this.enableButton("add-list-button");
+        this.disableButton("add-song-button");
+        this.disableButton("close-button");
+        this.disableButton("undo-button");
+        this.disableButton("redo-button");
     }
 
     /*
@@ -114,8 +119,24 @@ export default class PlaylisterView {
             itemDiv.id = "playlist-card-" + (i + 1);
 
             // PUT THE CONTENT INTO THE CARD
-            let itemText = document.createTextNode(String(i+1) + '. ' + song.title + " by " + song.artist);
+            let itemText = document.createTextNode(String(i+1) + '. ');
+            
             itemDiv.appendChild(itemText);
+
+
+            let songString = song.title + ' by ' + song.artist;
+            let link = 'https://www.youtube.com/watch?v=' + song.youTubeId;
+            let linkedSong = document.createElement("a");
+            linkedSong.href = link;
+            linkedSong.text = songString;
+            itemDiv.appendChild(linkedSong);
+            
+
+            let xButton = document.createElement("X");
+            xButton.innerHTML = ('<input type="button" id="delete-' + String(i) + '" value="&#x2715;" class="toolbar-button" text-align: "right" style="float: right;" />');
+            itemDiv.appendChild(xButton);
+            
+            
 
             // AND PUT THE CARD INTO THE UI
             itemsDiv.appendChild(itemDiv);
@@ -197,10 +218,41 @@ export default class PlaylisterView {
         let tps = model.tps;
         if (model.confirmDialogOpen) {
             this.disableButton("add-list-button");
+            this.disableButton("add-song-button");
             this.disableButton("undo-button");
             this.disableButton("redo-button");
             this.disableButton("close-button");
+        } else{
+            if(model.tps.hasTransactionToRedo()){
+                this.enableButton("redo-button");
+            } else{
+                this.disableButton("redo-button");
+            }
+    
+            if(model.tps.hasTransactionToUndo()){
+                this.enableButton("undo-button");
+            }else{
+                this.disableButton("undo-button");
+            }
+
+            if(model.hasCurrentList()){
+                this.disableButton("add-list-button");
+                this.enableButton("add-song-button");
+                this.enableButton("close-button");
+            } else{
+                this.enableButton("add-list-button");
+                this.disableButton("add-song-button");
+                this.disableButton("close-button");
+            }
+
         }
+
+
+       
+       
+
+
+        
     }
 
     /*

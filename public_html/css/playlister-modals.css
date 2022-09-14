@@ -16,6 +16,7 @@
   opacity: 0;
   transition: all 0.35s ease-in;
   font-family: var(--font-primary);
+  
 }
 
 .modal.is-visible {
@@ -93,6 +94,12 @@ span {
 
 .modal p + p {
   margin-top: 1rem;
+}
+
+.edit-song-table {
+  font-size: 25pt;
+  width: 450px;
+  
 }
 
 /* ANIMATIONS

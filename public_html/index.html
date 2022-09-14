@@ -45,6 +45,7 @@
         <div id="sidebar-list">
         </div>
         <div id="edit-toolbar">
+            <input type = "button" id="add-song-button", value = "+" class = "toolbar-button" />
             <input type="button" id='undo-button' value="⟲" class="toolbar-button" />
             <input type="button" id='redo-button' value="⟳" class="toolbar-button" />
             <input type="button" id='close-button' value="&#x2715;" class="toolbar-button" />
@@ -67,6 +68,55 @@
                 <div class="modal-south">
                     <input type="button" id="delete-list-confirm-button" class="modal-button" value='Confirm' />
                     <input type="button" id="delete-list-cancel-button" class="modal-button" value='Cancel' />
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="delete-song-modal" data-animation="slideInOutLeft">
+            <div class="modal-root" id='verify-delete-song-root'>
+                <div class="modal-north">
+                    Remove song?
+                </div>                
+                <div class="modal-center">
+                    <div class="modal-center-content">
+                        Are you sure you wish to permanently remove <span id="delete-song-span"></span> from the playlist?
+                    </div>
+                </div>
+                <div class="modal-south">
+                    <input type="button" id="delete-song-confirm-button" class="modal-button" value='Confirm' />
+                    <input type="button" id="delete-song-cancel-button" class="modal-button" value='Cancel' />
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="edit-song-modal" data-animation="slideInOutLeft">
+            <div class="modal-root" id='verify-edit-song-root'>
+                <div class="modal-north">
+                    Edit Song?
+                </div>                
+                <div class="modal-center">
+                    <div class="modal-center-content">
+                        <table class = "edit-song-table">
+                            <tr> 
+                                <td> Title: </td>
+                                <td> <input id = "titleInput" type="text" style="height:30px;font-size:14pt;"/> </td>
+                                 
+                            </tr>
+                            <tr>
+                                <td> Artist: </td>
+                                <td> <input id = "artistInput" type = "text" style="height:30px;font-size:14pt;" /> </td>
+                            </tr>
+
+                            <tr>
+                                <td> Youtube ID: </td>
+                                <td> <input id = "youtubeIDInput" type = "text" style="height:30px;font-size:14pt;" /> </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-south">
+                    <input type="button" id="edit-confirm-button" class="modal-button" value='Confirm' />
+                    <input type="button" id="edit-cancel-button" class="modal-button" value='Cancel' />
                 </div>
             </div>
         </div>
